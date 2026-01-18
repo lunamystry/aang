@@ -1,0 +1,169 @@
+@font-face {
+  font-family: 'Belanosima';
+  src: url('/static/fonts/Belanosima.ttf');
+}
+@font-face {
+  font-family: 'Dosis';
+  src: url('/static/fonts/Dosis.ttf');
+}
+.belanosima {
+  font-family: "Belanosima", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.dosis {
+  font-family: "Dosis", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+:root {
+  --green: #91d36b;
+  --orange: #fc9b1b;
+  --lightGrey: #999;
+  --grey: #444;
+  --darkGrey: #333;
+  --charcoal: #36454f;
+
+  --primary: #f5f1e9;
+  --secondary: #c4b8a3;
+  --accent1: #8c7e68;
+  --accent2: #e0d7c9;
+  --accent3: #a39580;
+}
+tr.htmx-swapping {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}
+html {
+  min-height: 100vh; /* When there is no content the shadow should still fill the whole screen */
+  min-height: 100dvh; /* take into account the chrome of the browser */
+}
+
+body {
+  box-shadow: 0 0 10px rgba(215,176,128,0.9) inset;
+  background-color: var(--primary);
+  color: var(--charcoal);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  min-height: 100vh; /* Let the content increase the height as needed */
+  min-height: 100dvh; /* Let the content increase the height as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  row-gap: 2rem;
+  font-family: "Dosis", sans-serif;
+}
+header {
+  text-align: center;
+}
+header h1 {
+  margin-bottom: 0;
+}
+header h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: normal;
+}
+.content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  row-gap: 1rem;
+  width: 30vw;
+  width: 30dvw;
+}
+
+.menu {
+  display: flex;
+  width: 95%;
+  margin: 0;
+}
+
+ol {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu-item {
+  padding: 1em 0.5em;
+  position: relative;
+  border-right: 5px solid var(--accent1);
+  border-radius: 5px;
+  margin: 0 0.1em;
+  transition: border-bottom 0.23s ease-in-out, background 0.23s linear;
+  cursor: pointer;
+  min-width: 8em;
+  padding: 1em;
+  width: 10em;
+}
+
+.menu-item:hover .sub-menu,
+.menu-item:focus-within .sub-menu,
+.sub-menu:hover {
+  visibility: visible;
+  opacity: 1;
+  display: flex;
+}
+
+.sub-menu {
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+  left: 0;
+  margin-top: 1em;
+  visibility: hidden;
+  display: none;
+  opacity: 0;
+  z-index: 2;
+}
+
+.sub-menu .menu-item {
+  margin: 0.1em 0;
+  padding: 1em;
+  width: 10em;
+  background: var(--accent2);
+}
+
+.sub-menu .menu-item:hover {
+  border-right: 5px solid var(--green);
+  color: white;
+}
+.sub-menu .menu-item:hover .account {
+  color: white;
+}
+
+a {
+  color: var(--accent1);
+  text-decoration: none;
+  outline: none;
+}
+
+span[role="button"] {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+}
+button {
+  background-color: var(--secondary);
+  border-radius: 3px;
+  border: 0;
+  display: inline-block;
+  padding: 1em 1em;
+  box-shadow: 0 0.5em 0.5em -0.4em rgba(0,0,0,.1);
+  outline: none;
+}
+button:hover {
+  box-shadow: 0 0.5em 0.5em -0.4em rgba(0,0,0,.5);
+  cursor: pointer;
+  color: white;
+}
+
