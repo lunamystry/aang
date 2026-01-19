@@ -66,6 +66,8 @@ val app =
     "dev.zio" %% "zio-streams" % "2.1.24",
     "ch.qos.logback" % "logback-classic" % "1.5.24",
     "org.slf4j" % "slf4j-api" % "2.0.17",
+    "com.cloudinary" % "cloudinary-http5" % "2.3.2",
+    "com.cloudinary" % "cloudinary-taglib" % "2.3.2",
   )
 
 val config =
