@@ -247,3 +247,5 @@ Temporary Items
 .scala/
 .vscode/
 metals.sbt
+
+*.db
