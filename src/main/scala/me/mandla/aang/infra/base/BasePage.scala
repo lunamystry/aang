@@ -5,6 +5,7 @@ package base
 import scalatags.Text.TypedTag
 import scalatags.Text.all.*
 import scalatags.Text
+import scalatags.Text.tags2.title
 import zio.*
 import zio.http.*
 import zio.http.codec.*
@@ -19,6 +20,9 @@ object BasePage:
   def generate(bodyContents: List[TypedTag[String]] = List.empty): TypedTag[String] =
     html(
       head(
+        title("Aang"),
+        meta(charset := "utf-8"),
+        meta(name := "viewport", content := "width=device-width, initial-scale=1"),
         script(
           src := "https://unpkg.com/htmx.org@2.0.4",
           integrity := "sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+",

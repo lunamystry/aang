@@ -10,7 +10,7 @@ import zio.{ ExitCode, Runtime, Scope, ZIO, ZIOAppDefault, * }
 
 import java.util.UUID
 
-import me.mandla.routes
+import me.mandla.aang.routes
 
 object AangApp extends ZIOAppDefault:
   override val bootstrap: ZLayer[ZIOAppArgs, Any, Any] =
