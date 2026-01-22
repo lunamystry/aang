@@ -47,63 +47,33 @@
 Design: Monolith
 
 * Because it is easier
-* Don't know how the scaling should work
-* LLM suggested microservice
-* Expecting 10s of users
+* It is a good way to see if an idea works without having to worry about network latency, distributed tracing, distributed transactions and other similar issues
+* The requirement is very small and has one developer basically
 
 Monitoring: out of scope
 
 * There will be logs
 * monolith does not need monitoring, everyone knows that
 
-Secrets: git-crypt
+Secrets: environment variables
 
-* I'm familiar with it
+* simple for a small app that is proving an idea
 * Easy to setup and use compared to something like harshicorp vault
 * Not as feature rich as harshicorp vault
 * Secrets are left exposed in deployed environment
 * Probably puts too much trust in the dev machine
 
-Docker/Podman: Yes
-
-* Can probably use it for testcontainers
-* Can use it for postgres
-* Can use it for mockserver
-* ~Can use it for harshicorp vault~ NO!
-
 Language: Scala with ZIO
 
-* I am more familiar with Scala than Clojure
+* I am more familiar with Scala for a fullstack app than other languages (Java, Rust, Python, Haskell considered and rejected)
+* I have 2 side projects that use Scala (one with ZIO and one with Playframework)
+* don't really want to have think about 2 languages for a small app (although JS is a given)
 * I don't want to learn and implement
-* I have some code in scala that uses htmx and zio for something like this
 * I can use the Java libraries for Google and Cloudinary if needed
 
-Database: postgres
+Database: sqlite
 
-* I like it
-
-## Layout
-
-Uses the actual services in the DAO to encourage full use of the service without trying 
-to be generic
-
-```
-      .
-     ├──  pages -- uses dao and infra to show a page, each folder has a self contained mvc as needed
-     │   ├──  landing 
-     │   └──  login 
-     ├──  dao -- accessing things that are outside of the application
-     │   ├──  cloudinary
-     │   ├──  google
-     │   └──  postgres
-     ├──  infra -- building blocks that are needed to build a page. These should be as generic as reasonable
-     │   ├──  auditing -- a wrapper on the structured logging library which also handles hiding sensitive and provides ability to log requests and responses
-     │   ├──  base -- so that there is a uniform style and metadata on pages
-     │   ├──  config
-     │   ├──  errors
-     │   └──  security
-     └──  application.scala - basically kicks off the application
-```
+* simpler than postgres
 
 ## Data flow
 

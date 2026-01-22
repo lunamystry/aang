@@ -1,6 +1,5 @@
 package me.mandla.aang
 package pages
-package signin
 
 import zio.{ ZIO, Task, ZLayer }
 import io.getquill.jdbczio.Quill
@@ -21,7 +20,7 @@ case class SignInService(
   ): ZIO[Any, Throwable, User] =
     quill.transaction:
       for id <- userRepo.save(u)
-      yield User(id, u.first_name, u.last_name, u.email, u.profile_picture)
+      yield User(id, u.first_name, u.last_name, u.email, u.avatar)
 
   def update(u: User): ZIO[Any, SQLException, User] =
     userRepo

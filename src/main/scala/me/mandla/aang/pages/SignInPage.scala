@@ -1,6 +1,5 @@
 package me.mandla.aang
 package pages
-package signin
 
 import scalatags.Text
 import scalatags.Text.all.*
@@ -22,7 +21,7 @@ object SignInPage:
         attr("data-auto_prompt") := "false",
       ),
       div(id := "google-signin-button"),
-      img(id := "profile-picture"),
+      img(id := "avatar"),
       script {
         raw {
           s"""
@@ -115,7 +114,7 @@ object SignInPage:
 
             // 3) Send ID token to your backend for verification and sign-in/up
             try {
-              const backendRes = await fetch('signin/google/callback', {
+              const backendRes = await fetch('signin/callback', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include', // if using cookies
@@ -129,9 +128,9 @@ object SignInPage:
               }
               const data = await backendRes.json(); // { picture, name, email }
               // display
-              const img = document.getElementById('profile-picture');
-              img.src = data.profile_picture;
-              img.alt = data.name || data.email || 'Google profile';
+              const img = document.getElementById('avatar');
+              img.src = data.avatar;
+              img.alt = data.first_name || data.email || 'Avatar';
               // Expect backend to verify token with Google's libs and create a session
               return { success: true, user: data };
             } catch (e) {

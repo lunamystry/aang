@@ -3,8 +3,8 @@ CREATE TABLE User (
 
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
-  email TEXT NOT NULL UNIQUE,
-  profile_picture TEXT NOT NULL,
+  email TEXT NOT NULL,
+  avatar TEXT NOT NULL,
 
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

@@ -23,6 +23,8 @@ case class GoogleTokenInfo(
   email: Option[String],
   email_verified: Option[String],
   name: Option[String],
+  given_name: Option[String],
+  family_name: Option[String],
   picture: Option[String],
   exp: Option[Long],
 )
@@ -31,15 +33,6 @@ object GoogleTokenInfo:
     DeriveJsonDecoder.gen[GoogleTokenInfo]
   implicit val encoder: JsonEncoder[GoogleTokenInfo] =
     DeriveJsonEncoder.gen[GoogleTokenInfo]
-
-case class PictureResponse(
-  picture: String,
-  name: Option[String],
-  email: Option[String],
-)
-object PictureResponse:
-  implicit val encoder: JsonEncoder[PictureResponse] =
-    DeriveJsonEncoder.gen[PictureResponse]
 
 val googleTokenInfoUrl = "https://oauth2.googleapis.com/tokeninfo?id_token="
 

@@ -2,6 +2,8 @@ package me.mandla.aang
 package dao
 package cloudinary
 
+import zio.{ ZIO, Task }
+
 import com.cloudinary.*
 import com.cloudinary.utils.ObjectUtils
 import com.cloudinary.*
@@ -12,51 +14,26 @@ import scala.jdk.CollectionConverters.*
 import java.util.Map
 
 def cloudinary() =
-  val cloudinary = Cloudinary("")
+  val url: String = java.lang.System.getenv("CLOUDINARY_URL")
+  val cloudinary = Cloudinary(url)
   cloudinary.config.secure = true;
-  println(cloudinary.config.cloudName)
   cloudinary
 
-def upload(imageUrl: String): scala.collection.mutable.Map[String, Any] =
-  try
-    val res =
-      cloudinary()
-        .uploader()
-        .upload(
-          imageUrl,
-          ObjectUtils.asMap(
-            "use_filename",
-            true,
-            "unique_filename",
-            false,
-            "overwrite",
-            true,
-          ),
-        )
-        .asScala
-        .asInstanceOf[scala.collection.mutable.Map[String, Any]];
-
-    println("")
-    println(res.get("secure_url"));
-    res
-
-  catch
-    case e: Throwable =>
-      println(e.getMessage);
-      scala.collection.mutable.Map()
-
-def getDetails(imageName: String): Unit =
-  try
-    println(
-      cloudinary()
-        .api()
-        .resource(
-          imageName,
-          ObjectUtils.asMap(
-            "quality_analysis",
-            true,
-          ),
-        )
-    )
-
-  catch case e: Throwable => println(e.getMessage)
+def upload(imageUrl: String): Task[scala.collection.mutable.Map[String, Any]] =
+  ZIO.attempt {
+    cloudinary()
+      .uploader()
+      .upload(
+        imageUrl,
+        ObjectUtils.asMap(
+          "use_filename",
+          true,
+          "unique_filename",
+          false,
+          "overwrite",
+          true,
+        ),
+      )
+      .asScala
+      .asInstanceOf[scala.collection.mutable.Map[String, Any]]
+  }

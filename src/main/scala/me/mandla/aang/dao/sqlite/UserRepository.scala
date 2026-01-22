@@ -12,7 +12,7 @@ case class User(
   first_name: String,
   last_name: String,
   email: String,
-  profile_picture: String,
+  avatar: String,
 )
 object User:
   implicit val encoder: JsonEncoder[User] =
@@ -22,7 +22,7 @@ case class NewUser(
   first_name: String,
   last_name: String,
   email: String,
-  profile_picture: String,
+  avatar: String,
 )
 
 case class UserRepository(quill: Quill.Sqlite[Escape]):
@@ -39,7 +39,7 @@ case class UserRepository(quill: Quill.Sqlite[Escape]):
             _.first_name -> lift(u.first_name),
             _.last_name -> lift(u.last_name),
             _.email -> lift(u.email),
-            _.profile_picture -> lift(u.profile_picture),
+            _.avatar -> lift(u.avatar),
           )
           .returningGenerated(_.id)
 

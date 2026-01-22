@@ -12,10 +12,10 @@ import javax.sql.DataSource
 import java.util.UUID
 
 import me.mandla.aang.Aang
-import me.mandla.aang.dao.sqlite.UserRepository
 import me.mandla.aang.dao.sqlite.Migrator
-import me.mandla.aang.pages.signin.SignInService
-import me.mandla.aang.pages.signin.SignInController
+import me.mandla.aang.dao.sqlite.UserRepository
+import me.mandla.aang.pages.SignInController
+import me.mandla.aang.pages.SignInService
 
 object AangApp extends ZIOAppDefault:
   override val bootstrap: ZLayer[ZIOAppArgs, Any, Any] =
