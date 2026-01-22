@@ -6,6 +6,9 @@ import scalatags.Text
 import scalatags.Text.all.*
 
 object SignInPage:
+  val clientId: String =
+    System.getenv("GOOGLE_CLIENT_ID")
+
   def content() =
     div(
       script(
@@ -14,7 +17,7 @@ object SignInPage:
       ),
       div(
         id := "g_id_onload",
-        attr("data-client_id") := "",
+        attr("data-client_id") := clientId,
         attr("data-callback") := "handleCredentialResponse",
         attr("data-auto_prompt") := "false",
       ),
@@ -22,11 +25,11 @@ object SignInPage:
       img(id := "profile-picture"),
       script {
         raw {
-          """
+          s"""
           // initialize (auto_prompt disabled so One Tap won't show)
           window.onload = () => {
             google.accounts.id.initialize({
-              client_id: '',
+              client_id: '$clientId',
               callback: handleCredentialResponse,
               auto_select: false    // don't auto-select an account
             });
@@ -47,7 +50,12 @@ object SignInPage:
             // Optional: cancel One Tap if it might appear
             google.accounts.id.disableAutoSelect();
           };
-
+          """
+        }
+      },
+      script {
+        raw {
+          """
           async function handleCredentialResponse(response) {
             // response.credential is a JWT (ID token)
             const idToken = response?.credential;

@@ -57,7 +57,8 @@ object SignInController:
 
 // Cloudinary stuff
 def cloudinary() =
-  val cloudinary = Cloudinary("")
+  val url: String = java.lang.System.getenv("CLOUDINARY_URL")
+  val cloudinary = Cloudinary(url)
   cloudinary.config.secure = true;
   println(cloudinary.config.cloudName)
   cloudinary
