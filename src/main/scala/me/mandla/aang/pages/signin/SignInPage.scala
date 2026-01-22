@@ -19,7 +19,7 @@ object SignInPage:
         attr("data-auto_prompt") := "false",
       ),
       div(id := "google-signin-button"),
-      img(id := "profile-pic"),
+      img(id := "profile-picture"),
       script {
         raw {
           """
@@ -107,7 +107,7 @@ object SignInPage:
 
             // 3) Send ID token to your backend for verification and sign-in/up
             try {
-              const backendRes = await fetch('https://iqzao-2c0e-7f01-ed14-b919-da43-aeff-fe18-69cc.a.free.pinggy.link/signin/google/callback', {
+              const backendRes = await fetch('signin/google/callback', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include', // if using cookies
@@ -121,8 +121,8 @@ object SignInPage:
               }
               const data = await backendRes.json(); // { picture, name, email }
               // display
-              const img = document.getElementById('profile-pic');
-              img.src = data.picture;
+              const img = document.getElementById('profile-picture');
+              img.src = data.profile_picture;
               img.alt = data.name || data.email || 'Google profile';
               // Expect backend to verify token with Google's libs and create a session
               return { success: true, user: data };

@@ -7,6 +7,11 @@ import zio.http.*
 import zio.http.codec.*
 import zio.json.*
 
+import com.cloudinary.*
+import com.cloudinary.utils.ObjectUtils
+import com.cloudinary.*
+import com.cloudinary.utils.ObjectUtils
+
 import java.net.http.*
 import java.net.URI
 import java.net.http.HttpRequest.BodyPublishers
@@ -28,43 +33,53 @@ case class SignInController(service: SignInService):
         .mapError(e => Errors.BadRequest("Malformed form data"))
         .flatMap(bodyStr => ZIO.fromEither(bodyStr.fromJson[TokenRequest].left.map(err => new RuntimeException(err))))
         .flatMap(tokenReq => verifyToken(tokenReq.id_token).catchAll(e => ZIO.fail(Errors.BadRequest("No"))))
-        .flatMap { info =>
-          service.save {
-            NewUser(
-              info.given_name.getOrElse("Aang"),
-              info.family_name.getOrElse("Airnomad"),
-              info.email.get,
-              info.picture.getOrElse("images/aang.webp"),
-            )
+        .map { info =>
+          NewUser(
+            info.given_name.getOrElse("Aang"),
+            info.family_name.getOrElse("Airnomad"),
+            info.email.get,
+            info.picture.getOrElse("images/aang.webp"),
+          )
+        }
+        .flatMap { user =>
+          upload(user.profile_picture).map { res =>
+            user
+              .copy(profile_picture = res.get("secure_url").map(url => url.asInstanceOf[String]).getOrElse(user.profile_picture))
           }
         }
+        .flatMap { newUser => service.save(newUser) }
         .map(user => Response.json(user.toJson))
         .defaultErrorsMappings
-
-      // service
-      //   .getAccount(id)
-      //   .flatMap { account =>
-      //     account match
-      //       case None => ZIO.fail(NotFound(s"Account with ID=$id not found"))
-      //       case Some(a) => service.getTransactionsFor(a)
-      //   }
-      //   .zipPar(service.countTransactionsFor(id))
-      //   .zipPar(service.getAccounts())
-      //   .map(
-      //     (
-      //       account,
-      //       transactions,
-      //       count,
-      //       accounts,
-      //     ) => AccountView.list(account, transactions, accounts, page + 1, searchTerm, count)
-      //   )
-      //   .map(BasePage.generate)
-      //   .map(scalatagsToResponse)
-      //   .defaultErrorsMappings
 
 object SignInController:
   val default: ZLayer[SignInService, Nothing, SignInController] =
     ZLayer.fromFunction(SignInController.apply)
+
+// Cloudinary stuff
+def cloudinary() =
+  val cloudinary = Cloudinary("")
+  cloudinary.config.secure = true;
+  println(cloudinary.config.cloudName)
+  cloudinary
+
+def upload(imageUrl: String): Task[scala.collection.mutable.Map[String, Any]] =
+  ZIO.attempt {
+    cloudinary()
+      .uploader()
+      .upload(
+        imageUrl,
+        ObjectUtils.asMap(
+          "use_filename",
+          true,
+          "unique_filename",
+          false,
+          "overwrite",
+          true,
+        ),
+      )
+      .asScala
+      .asInstanceOf[scala.collection.mutable.Map[String, Any]]
+  }
 
 // Google stuff
 case class TokenRequest(id_token: String)
